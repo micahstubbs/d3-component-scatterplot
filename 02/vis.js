@@ -1,58 +1,61 @@
 
     // This stateless component renders a static "wheel" made of circles,
     // and rotates it depending on the value of props.angle.
-    var wheel = d3.component("g")
+    const wheel = d3.component("g")
       .create(function (){
-        var minRadius = 4,
-            maxRadius = 10,
-            numDots = 10,
-            wheelRadius = 40,
-            rotation = 0,
-            rotationIncrement = 3, 
-            radius = d3.scaleLinear()
-              .domain([0, numDots - 1])
-              .range([maxRadius, minRadius]),
-            angle = d3.scaleLinear()
-              .domain([0, numDots])
-              .range([0, Math.PI * 2]);
-        d3.select(this)
-          .selectAll("circle").data(d3.range(numDots))
-          .enter().append("circle")
-            .attr("cx", function (d){ return Math.sin(angle(d)) * wheelRadius; })
-            .attr("cy", function (d){ return Math.cos(angle(d)) * wheelRadius; })
-            .attr("r", radius);
-      })
+      const minRadius = 4;
+      const maxRadius = 10;
+      const numDots = 10;
+      const wheelRadius = 40;
+      const rotation = 0;
+      const rotationIncrement = 3;
+
+      const radius = d3.scaleLinear()
+        .domain([0, numDots - 1])
+        .range([maxRadius, minRadius]);
+
+      const angle = d3.scaleLinear()
+        .domain([0, numDots])
+        .range([0, Math.PI * 2]);
+
+      d3.select(this)
+        .selectAll("circle").data(d3.range(numDots))
+        .enter().append("circle")
+          .attr("cx", d => Math.sin(angle(d)) * wheelRadius)
+          .attr("cy", d => Math.cos(angle(d)) * wheelRadius)
+          .attr("r", radius);
+    })
       .render(function (d){
-        d3.select(this).attr("transform", "rotate(" + d + ")");
+        d3.select(this).attr("transform", `rotate(${d})`);
       });
     
     // This component with a local timer makes the wheel spin.
-    var spinner = (function (){
-      var timer = d3.local();
+    const spinner = ((() => {
+      const timer = d3.local();
       return d3.component("g")
         .create(function (d){
-          timer.set(this, d3.timer(function (elapsed){
+          timer.set(this, d3.timer(elapsed => {
             d3.select(this).call(wheel, elapsed * d.speed);
-          }.bind(this)));
+          }));
         })
         .render(function (d){
-          d3.select(this).attr("transform", "translate(" + d.x + "," + d.y + ")");
+          d3.select(this).attr("transform", `translate(${d.x},${d.y})`);
         })
         .destroy(function(d){
           timer.get(this).stop();
           return d3.select(this)
               .attr("fill-opacity", 1)
             .transition().duration(3000)
-              .attr("transform", "translate(" + d.x + "," + d.y + ") scale(10)")
+              .attr("transform", `translate(${d.x},${d.y}) scale(10)`)
               .attr("fill-opacity", 0);
         });
-    }());
+    })());
     
-    var axis = (function (){
-      var axisLocal = d3.local();
+    const axis = ((() => {
+      const axisLocal = d3.local();
       return d3.component("g")
         .create(function (d){
-          axisLocal.set(this, d3["axis" + d.type]());
+          axisLocal.set(this, d3[`axis${d.type}`]());
           d3.select(this)
               .attr("opacity", 0)
               .call(axisLocal.get(this)
@@ -63,42 +66,43 @@
         })
         .render(function (d){
           d3.select(this)
-              .attr("transform", "translate(" + [
-                d.translateX || 0,
-                d.translateY || 0
-              ] + ")")
+              .attr("transform", `translate(${[
+      d.translateX || 0,
+      d.translateY || 0
+    ]})`)
             .transition("ticks").duration(3000)
               .call(axisLocal.get(this));
         });
-    }());
+    })());
     
     // This component displays the visualization.
-    var scatterPlot = (function (){
-      var xScale = d3.scaleLinear(),
-          yScale = d3.scaleLinear(),
-          colorScale = d3.scaleOrdinal()
-            .range(d3.schemeCategory10);
+    const scatterPlot = ((() => {
+      const xScale = d3.scaleLinear();
+      const yScale = d3.scaleLinear();
+
+      const colorScale = d3.scaleOrdinal()
+        .range(d3.schemeCategory10);
 
 
       function render(d){
-        var x = d.x,
-            y = d.y,
-            color = d.color,
-            margin = d.margin,
-            innerWidth = d.width - margin.left - margin.right,
-            innerHeight = d.height - margin.top - margin.bottom;
-            
+        const x = d.x;
+        const y = d.y;
+        const color = d.color;
+        const margin = d.margin;
+        const innerWidth = d.width - margin.left - margin.right;
+        const innerHeight = d.height - margin.top - margin.bottom;
+
         xScale
-          .domain(d3.extent(d.data, function (d){ return d[x]; }))
+          .domain(d3.extent(d.data, d => d[x]))
           .range([0, innerWidth]);
         yScale
-          .domain(d3.extent(d.data, function (d){ return d[y]; }))
+          .domain(d3.extent(d.data, d => d[y]))
           .range([innerHeight, 0]);
         colorScale
-          .domain(d3.extent(d.data, function (d){ return d[color]; }));
-        
+          .domain(d3.extent(d.data, d => d[color]));
+
         d3.select(this)
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+            .attr("transform", `translate(${margin.left},${margin.top})`)
             .call(axis, [
               {
                 type: "Left",
@@ -112,8 +116,8 @@
                 ticks: 20
               }
             ])
-        
-        var circles = d3.select(this).selectAll(".point").data(d.data);
+
+        const circles = d3.select(this).selectAll(".point").data(d.data);
         circles.exit().remove();
         circles
           .enter().append("circle")
@@ -126,49 +130,47 @@
             .on("mouseout", d.hide)
           .transition()
             .duration(2000)
-            .delay(function (d, i){ return i * 5; })
+            .delay((d, i) => i * 5)
             .attr("r", 10)
-            .attr("cx", function (d){ return xScale(d[x]); })
-            .attr("cy", function (d){ return yScale(d[y]); })
-            .attr("color", function (d){ return colorScale(d[color]); })
+            .attr("cx", d => xScale(d[x]))
+            .attr("cy", d => yScale(d[y]))
+            .attr("color", d => colorScale(d[color]))
       }
       return d3.component("g")
         .render(render);
-    }());
+    })());
     
     // Leverage the d3-tip library for tooltips.
-    var tooltip = (function (){
-      var tip = d3.tip()
+    const tooltip = ((() => {
+      const tip = d3.tip()
         .attr("class", "d3-tip")
         .offset([-10, 0]);
-      return function (svgSelection, state){
+      return (svgSelection, state) => {
         
         // Wish we could use D3 here for DOM manipulation..
-        tip.html(function(d) {
-          return [
-            "<h4>" + d.year + " " + d.name + "</h4>",
-            "<div><strong>" + state.x + ": </strong>",
-            "<span>" + d[state.x] + "</span></div>",
-            "<div><strong>" + state.y + ": </strong>",
-            "<span>" + d[state.y] + "</span></div>",
-            "<div><strong>" + state.color + ": </strong>",
-            "<span>" + d[state.color] + "</span></div>"
-          ].join("");
-        });
+        tip.html(d => [
+          `<h4>${d.year} ${d.name}</h4>`,
+          `<div><strong>${state.x}: </strong>`,
+          `<span>${d[state.x]}</span></div>`,
+          `<div><strong>${state.y}: </strong>`,
+          `<span>${d[state.y]}</span></div>`,
+          `<div><strong>${state.color}: </strong>`,
+          `<span>${d[state.color]}</span></div>`
+        ].join(""));
         svgSelection.call(tip);
         return {
           show: tip.show,
           hide: tip.hide
         };
       }
-    }());
+    })());
     
     // This component manages an svg element, and
     // either displays a spinner or text,
     // depending on the value of the `loading` state.
-    var svg = d3.component("svg")
+    const svg = d3.component("svg")
       .render(function (d){
-        var svgSelection = d3.select(this)
+        const svgSelection = d3.select(this)
             .attr("width", d.width)
             .attr("height", d.height)
             .call(spinner, !d.loading ? [] : {
@@ -176,22 +178,22 @@
               y: d.height / 2,
               speed: 0.2
             });
-        var tipCallbacks = tooltip(svgSelection, d);
+        const tipCallbacks = tooltip(svgSelection, d);
         svgSelection
             .call(scatterPlot, d.loading ? [] : d, tipCallbacks);
       });
     
-    var label = d3.component("label", "col-sm-2 col-form-label")
+    const label = d3.component("label", "col-sm-2 col-form-label")
       .render(function (d){
         d3.select(this).text(d);
       });
     
-    var option = d3.component("option")
+    const option = d3.component("option")
       .render(function (d){
         d3.select(this).text(d);
       });
     
-    var select = d3.component("select", "form-control")
+    const select = d3.component("select", "form-control")
       .render(function (d){
         d3.select(this)
             .call(option, d.columns)
@@ -201,20 +203,20 @@
             })
       });
     
-    var rowComponent = d3.component("div", "row");
-    var colSm10 = d3.component("div", "col-sm-10");
-    var menu = d3.component("div", "col-sm-4")
+    const rowComponent = d3.component("div", "row");
+    const colSm10 = d3.component("div", "col-sm-10");
+    const menu = d3.component("div", "col-sm-4")
       .render(function (d){
-        var row = rowComponent(d3.select(this)).call(label, d.label);
+        const row = rowComponent(d3.select(this)).call(label, d.label);
         colSm10(row).call(select, d);
       });
     
-    var menus = d3.component("div", "container-fluid")
+    const menus = d3.component("div", "container-fluid")
       .create(function (){
         d3.select(this).style("opacity", 0);
       })
       .render(function (d){
-        var selection = d3.select(this);
+        const selection = d3.select(this);
         rowComponent(selection).call(menu, [
           {
             label: "X",
@@ -241,13 +243,13 @@
         }
       });
     
-    var app = d3.component("div")
+    const app = d3.component("div")
       .render(function (d){
         d3.select(this).call(menus, d).call(svg, d);
       });
     
     function loadData(actions){
-      var numericColumns = [
+      const numericColumns = [
             "acceleration",
             "cylinders", 
             "displacement", 
@@ -255,21 +257,22 @@
             "weight", 
             "year", 
             "mpg"
-          ],
-          ordinalColumns = [
-            "cylinders",
-            "origin",
-            "year"
           ];
 
-      setTimeout(function (){ // Show off the spinner for a few seconds ;)
-        d3.csv("auto-mpg.csv", type, function (data){
+      const ordinalColumns = [
+        "cylinders",
+        "origin",
+        "year"
+      ];
+
+      setTimeout(() => { // Show off the spinner for a few seconds ;)
+        d3.csv("auto-mpg.csv", type, data => {
           actions.ingestData(data, numericColumns, ordinalColumns)
         });
       }, 2000);
-      
+
       function type(d){
-        return numericColumns.reduce(function (d, column){
+        return numericColumns.reduce((d, column) => {
           d[column] = + d[column];
           return d;
         }, d);
@@ -307,32 +310,32 @@
     
     function actionsFromDispatch(dispatch){
       return {
-        ingestData: function (data, numericColumns, ordinalColumns){
+        ingestData(data, numericColumns, ordinalColumns) {
           dispatch({
             type: "INGEST_DATA",
-            data: data,
-            numericColumns: numericColumns,
-            ordinalColumns: ordinalColumns
+            data,
+            numericColumns,
+            ordinalColumns
           });
         },
-        setX: function (column){
-          dispatch({ type: "SET_X", column: column });
+        setX(column) {
+          dispatch({ type: "SET_X", column });
         },
-        setY: function (column){
-          dispatch({ type: "SET_Y", column: column });
+        setY(column) {
+          dispatch({ type: "SET_Y", column });
         },
-        setColor: function (column){
-          dispatch({ type: "SET_COLOR", column: column });
+        setColor(column) {
+          dispatch({ type: "SET_COLOR", column });
         }
       };
     }
     
     function main(){
-      var store = Redux.createStore(reducer),
-          actions = actionsFromDispatch(store.dispatch);
-          renderApp = function(){
-            d3.select("body").call(app, store.getState(), actions);
-          }
+      const store = Redux.createStore(reducer);
+      const actions = actionsFromDispatch(store.dispatch);
+      renderApp = () => {
+        d3.select("body").call(app, store.getState(), actions);
+      }
       renderApp();
       store.subscribe(renderApp);
       loadData(actions);

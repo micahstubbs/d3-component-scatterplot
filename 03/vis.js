@@ -12,12 +12,12 @@ const wheel = d3.component('g')
     const rotationIncrement = 3;
 
     const radius = d3.scaleLinear()
-    .domain([0, numDots - 1])
-    .range([maxRadius, minRadius]);
+      .domain([0, numDots - 1])
+      .range([maxRadius, minRadius]);
 
     const angle = d3.scaleLinear()
-    .domain([0, numDots])
-    .range([0, Math.PI * 2]);
+      .domain([0, numDots])
+      .range([0, Math.PI * 2]);
 
     d3.select(this)
     .selectAll('circle').data(d3.range(numDots))
@@ -84,14 +84,19 @@ const scatterPlot = ((() => {
   const colorScale = d3.scaleOrdinal()
     .range(d3.schemeCategory10);
 
+  const radiusScale = d3.scaleLinear();
+  const fillOpacityScale = d3.scaleThreshold();
 
   function render(d) {
     const x = d.x;
     const y = d.y;
     const color = d.color;
+    const radius = d.radius;
     const margin = d.margin;
     const innerWidth = d.width - margin.left - margin.right;
     const innerHeight = d.height - margin.top - margin.bottom;
+    const minRadius = 1;
+    const maxRadius = 12;
 
     xScale
       .domain(d3.extent(d.data, d => d[x]))
@@ -101,6 +106,15 @@ const scatterPlot = ((() => {
       .range([innerHeight, 0]);
     colorScale
       .domain(d3.extent(d.data, d => d[color]));
+    radiusScale
+      .domain(d3.extent(d.data, d => d[radius]))
+      .range([maxRadius, minRadius]);
+
+    // set the fill opacity 
+    // based on the cardinality of the data
+    fillOpacityScale
+      .domain([200, 300, 500])
+      .range([0.7, 0.5, 0.3, 0.2])
 
     d3.select(this)
       .attr('transform', `translate(${margin.left},${margin.top})`)
@@ -118,6 +132,7 @@ const scatterPlot = ((() => {
         },
       ]);
 
+    const renderData = d.data;
     const circles = d3.select(this).selectAll('.point').data(d.data);
     circles.exit().remove();
     circles
@@ -132,10 +147,11 @@ const scatterPlot = ((() => {
       .transition()
         .duration(2000)
         .delay((d, i) => i * 5)
-        .attr('r', 10)
+        .attr('r', d => radiusScale(d[radius]))
         .attr('cx', d => xScale(d[x]))
         .attr('cy', d => yScale(d[y]))
-        .attr('color', d => colorScale(d[color]));
+        .attr('color', d => colorScale(d[color]))
+        .style('fill-opacity', fillOpacityScale(renderData.length));
   }
   return d3.component('g')
     .render(render);
@@ -236,6 +252,12 @@ const menus = d3.component('div', 'container-fluid')
         action: d.setColor,
         columns: d.ordinalColumns,
       },
+      {
+        label: 'Radius',
+        value: d.radius,
+        action: d.setRadius,
+        columns: d.numericColumns
+      }
     ], d);
     if (!d.loading && selection.style('opacity') === '0') {
       selection.transition().duration(2000)
@@ -288,6 +310,7 @@ function reducer(state, action) {
     x: 'acceleration',
     y: 'horsepower',
     color: 'cylinders',
+    radius: 'weight'
   };
   switch (action.type) {
     case 'INGEST_DATA':
@@ -303,6 +326,8 @@ function reducer(state, action) {
       return Object.assign({}, state, { y: action.column });
     case 'SET_COLOR':
       return Object.assign({}, state, { color: action.column });
+    case 'SET_RADIUS':
+      return Object.assign({}, state, { radius: action.column });
     default:
       return state;
   }
@@ -327,6 +352,9 @@ function actionsFromDispatch(dispatch) {
     setColor(column) {
       dispatch({ type: 'SET_COLOR', column });
     },
+    setRadius(column) {
+      dispatch({ type: 'SET_RADIUS', column });
+    }
   };
 }
 

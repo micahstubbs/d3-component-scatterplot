@@ -1,5 +1,4 @@
-/* global d3 Redux wheel spinner axis scatterplot tooltip app loadData reducer actionsFromDispatch */
-
+/* global d3 Redux loadData reducer actionsFromDispatch app */
 
 function main() {
   const store = Redux.createStore(reducer);

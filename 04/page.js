@@ -1,5 +1,19 @@
 /* global d3 spinner scatterplot tooltip */
 
+//Quick fix for resizing some things for mobile-ish viewers
+// vanilla JS window width and height
+// https://gist.github.com/joshcarr/2f861bd37c3d0df40b30
+
+const wV = window;
+const dV = document;
+const eV = dV.documentElement;
+const gV = dV.getElementsByTagName('body')[0];
+const xV = wV.innerWidth || eV.clientWidth || gV.clientWidth;
+const yV = wV.innerHeight || eV.clientHeight || gV.clientHeight;
+
+// Quick fix for resizing some things for mobile-ish viewers
+const mobileScreen = (xV < 500);
+
 // This component manages an svg element, and
 // either displays a spinner or text,
 // depending on the value of the `loading` state.

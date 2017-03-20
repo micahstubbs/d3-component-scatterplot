@@ -1,4 +1,4 @@
-/* global d3 axis */
+/* global d3 axis mobileScreen */
 
 // This component displays the visualization.
 const scatterplot = ((() => {
@@ -8,7 +8,8 @@ const scatterplot = ((() => {
   const colorScale = d3.scaleOrdinal()
     .range(d3.schemeCategory10);
 
-  const radiusScale = d3.scaleLinear();
+  // scale for the circle size
+  const radiusScale = d3.scaleSqrt();
   const fillOpacityScale = d3.scaleThreshold();
 
   function render(d) {
@@ -31,8 +32,8 @@ const scatterplot = ((() => {
     colorScale
       .domain(d3.extent(d.data, d => d[color]));
     radiusScale
-      .domain(d3.extent(d.data, d => d[radius]))
-      .range([maxRadius, minRadius]);
+      .range([mobileScreen ? 1 : 2, mobileScreen ? 10 : 16])
+      .domain(d3.extent(d.data, d => d[radius]));
 
     // set the fill opacity
     // based on the cardinality of the data

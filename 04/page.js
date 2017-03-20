@@ -1,6 +1,6 @@
 /* global d3 spinner scatterplot tooltip */
 
-//Quick fix for resizing some things for mobile-ish viewers
+// Quick fix for resizing some things for mobile-ish viewers
 // vanilla JS window width and height
 // https://gist.github.com/joshcarr/2f861bd37c3d0df40b30
 

@@ -1,29 +1,5 @@
-/* global d3 Redux wheel spinner axis scatterplot tooltip app loadData reducer */
+/* global d3 Redux wheel spinner axis scatterplot tooltip app loadData reducer actionsFromDispatch */
 
-function actionsFromDispatch(dispatch) {
-  return {
-    ingestData(data, numericColumns, ordinalColumns) {
-      dispatch({
-        type: 'INGEST_DATA',
-        data,
-        numericColumns,
-        ordinalColumns,
-      });
-    },
-    setX(column) {
-      dispatch({ type: 'SET_X', column });
-    },
-    setY(column) {
-      dispatch({ type: 'SET_Y', column });
-    },
-    setColor(column) {
-      dispatch({ type: 'SET_COLOR', column });
-    },
-    setRadius(column) {
-      dispatch({ type: 'SET_RADIUS', column });
-    },
-  };
-}
 
 function main() {
   const store = Redux.createStore(reducer);

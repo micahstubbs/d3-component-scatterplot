@@ -1,5 +1,9 @@
 an example that separates concerns a bit with functions in different files
 
+nice point sizing with a square root radius scale from the block [ES2015 Voronoi Scatterplot with bootstrap-native popover tooltip](https://bl.ocks.org/micahstubbs/378c73b53ce447bc325e3007829b9a01) from [@micahstubbs](https://twitter.com/micahstubbs)
+
+find a nice [commit history](https://github.com/micahstubbs/d3-component-scatterplot/commits/master) at the [companion repo](https://github.com/micahstubbs/d3-component-scatterplot)
+
 ---
 
 now with a new dimension to toggle: mark size (radius)

@@ -4,10 +4,10 @@ function reducer(state, action) {
     height: 500 - 38,
     loading: true,
     margin: { top: 12, right: 12, bottom: 40, left: 50 },
-    x: 'acceleration',
-    y: 'horsepower',
+    x: 'horsepower',
+    y: 'mpg',
     color: 'cylinders',
-    radius: 'weight',
+    radius: 'year',
   };
   switch (action.type) {
     case 'INGEST_DATA':

@@ -1,4 +1,4 @@
-/* global d3 */
+import * as d3 from 'd3';
 
 // This stateless component renders a static "wheel" made of circles,
 // and rotates it depending on the value of props.angle.

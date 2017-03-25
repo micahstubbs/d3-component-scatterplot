@@ -28,5 +28,9 @@
     "rollup-plugin-babel": "^2.7.1",
     "uglify-js": "2"
   },
-  "homepage": "https://github.com/micahstubbs/d3-component-scatterplot#readme"
+  "homepage": "https://github.com/micahstubbs/d3-component-scatterplot#readme",
+  "dependencies": {
+    "d3": "^4.7.4",
+    "d3-component": "^2.5.1"
+  }
 }

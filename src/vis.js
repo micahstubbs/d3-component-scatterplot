@@ -1,15 +1,8 @@
-/* global d3 Redux loadData reducer actionsFromDispatch app */
+// script-tag-globals d3 Redux loadData reducer actionsFromDispatch app 
+import main from './main';
 
-function main() {
-  const store = Redux.createStore(reducer);
-  const actions = actionsFromDispatch(store.dispatch);
-  const renderApp = () => {
-    d3.select('body').call(app, store.getState(), actions);
-  };
-  renderApp();
-  store.subscribe(renderApp);
-  loadData(actions);
-}
+// import * as d3 from 'd3';
+// import Redux from 'redux';
 
 // call main() to run the app
 main();

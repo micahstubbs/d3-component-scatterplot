@@ -6,6 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "scripts": {
+    "prebuild": "eslint lib test",
+    "build": "rollup -c",
+    "watch": "rollup -c -w",
+    "pretest": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "npm test"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/micahstubbs/d3-component-scatterplot.git"
@@ -15,6 +23,10 @@
   "bugs": {
     "url": "https://github.com/micahstubbs/d3-component-scatterplot/issues"
   },
+  "files": [
+    "lib",
+    "dist"
+  ],
   "devDependencies": {
     "eslint": "^2.9.0",
     "eslint-config-airbnb": "^9.0.1",

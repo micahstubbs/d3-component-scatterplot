@@ -1,17 +1,11 @@
 {
   "name": "d3-component-scatterplot",
   "version": "0.1.0",
-  "description": "",
+  "description": "an interactive scatterplot built with d3-component and redux",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "scripts": {
-    "prebuild": "eslint lib test",
     "build": "rollup -c",
-    "pretest": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublish": "npm test"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -23,15 +17,16 @@
     "url": "https://github.com/micahstubbs/d3-component-scatterplot/issues"
   },
   "devDependencies": {
-    "eslint": "^2.9.0",
-    "eslint-config-airbnb": "^9.0.1",
-    "eslint-plugin-import": "^1.10.2",
+    "eslint": "^3.18.0",
+    "eslint-config-airbnb-base": "^11.1.1",
+    "eslint-plugin-import": "^2.2.0",
     "babel-plugin-external-helpers": "^6.18.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-register": "^6.18.0",
     "babelrc-rollup": "^3.0.0",
-    "rollup": "^0.37.0",
-    "rollup-plugin-babel": "^2.7.1"
+    "rollup": "0.41",
+    "rollup-plugin-babel": "^2.7.1",
+    "uglify-js": "2"
   },
   "homepage": "https://github.com/micahstubbs/d3-component-scatterplot#readme"
 }

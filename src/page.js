@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* global d3 spinner scatterplot tooltip window document */
 
 // Quick fix for resizing some things for mobile-ish viewers

@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* global d3 wheel */
 
 // This component with a local timer makes the wheel spin.

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 function reducer(state, action) {
   state = state || {
     width: 960,

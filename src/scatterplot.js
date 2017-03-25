@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* global d3 axis mobileScreen */
 
 // This component displays the visualization.

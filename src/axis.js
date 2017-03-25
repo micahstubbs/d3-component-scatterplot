@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* global d3 */
 
 const axis = ((() => {

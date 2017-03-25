@@ -1,5 +1,5 @@
 {
-  "extends": "airbnb",
+  "extends": "airbnb-base",
   "rules": {
     "max-len": "off",
     "prefer-rest-params": "off",
@@ -17,6 +17,7 @@
     "no-return-assign": ["error", "always"],
     "no-unused-vars": "off",
     "newline-per-chained-call": "off",
-    "no-restricted-properties": "off"
+    "no-restricted-properties": "off",
+    "import/extensions": "off"
   }
 }

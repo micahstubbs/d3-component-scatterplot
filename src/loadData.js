@@ -1,7 +1,6 @@
-/* eslint-disable */
-/* global d3 */
+import * as d3 from 'd3';
 
-function loadData(actions) {
+export default function loadData(actions) {
   const numericColumns = [
     'acceleration',
     'cylinders',

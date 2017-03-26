@@ -1,6 +1,8 @@
 /* eslint-disable */
 /* global d3 spinner scatterplot tooltip window document */
 
+import * as d3 from 'd3';
+
 // Quick fix for resizing some things for mobile-ish viewers
 // vanilla JS window width and height
 // https://gist.github.com/joshcarr/2f861bd37c3d0df40b30
@@ -99,7 +101,7 @@ const menus = d3.component('div', 'container-fluid')
     }
   });
 
-const app = d3.component('div')
+export const app = d3.component('div')
   .render(function (d) {
     d3.select(this).call(svg, d).call(menus, d);
   });

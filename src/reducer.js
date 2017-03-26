@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-function reducer(state, action) {
+export default function reducer(state, action) {
   state = state || {
     width: 960,
     height: 500 - 88,

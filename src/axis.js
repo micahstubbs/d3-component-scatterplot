@@ -1,5 +1,4 @@
-/* eslint-disable */
-/* global d3 */
+import * as d3 from 'd3';
 
 const axis = ((() => {
   const axisLocal = d3.local();

@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 export default function actionsFromDispatch(dispatch) {
   return {
     ingestData(data, numericColumns, ordinalColumns) {

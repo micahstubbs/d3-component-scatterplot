@@ -1,5 +1,5 @@
 import drawVis from './src/drawVis';
 
-export default function () {
+export function d3ComponentScatterPlot () {
   drawVis();
 }

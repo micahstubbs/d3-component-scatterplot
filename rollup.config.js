@@ -10,8 +10,8 @@ export default {
   entry: 'index.js',
   format: 'umd',
   globals: {
-    d3: 'd3',
-    redux: 'Redux' // ,
+    // d3: 'd3',
+    // redux: 'Redux' // ,
     // lodash: '_',
     // 'bootstrap.native': 'bsn' 
   },
@@ -23,7 +23,7 @@ export default {
     commonjs()
   ],
   external: external,
-  dest: 'build/bundle.js',
+  dest: 'build/d3-component-scatterplot.js',
   acorn: {
     allowReserved: true
   }

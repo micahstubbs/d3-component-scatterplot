@@ -4,7 +4,7 @@
   "description": "an interactive scatterplot built with d3-component and redux",
   "main": "index.js",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c & cp build/d3-component-scatterplot.js examples/05/",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --fix src/ index.js"
   },
